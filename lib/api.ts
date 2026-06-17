@@ -17,8 +17,46 @@ export async function fetchPokemonList(limit = 20, offset = 0): Promise<PokemonL
 }
 
 export async function fetchPokemonByName(name: string) {
-  const res = await fetch(`${POKEAPI_BASE_URL}/pokemon/${name.toLowerCase()}`);
-  if (!res.ok) throw new Error("Failed to fetch pokemon details");
+  let actualName = name.toLowerCase();
+  
+  // PokeAPI splits some species into forms for their default pokemon entry
+  const nameMapping: Record<string, string> = {
+    'oinkologne': 'oinkologne-male',
+    'deoxys': 'deoxys-normal',
+    'wormadam': 'wormadam-plant',
+    'giratina': 'giratina-altered',
+    'shaymin': 'shaymin-land',
+    'basculin': 'basculin-red-striped',
+    'darmanitan': 'darmanitan-standard',
+    'tornadus': 'tornadus-incarnate',
+    'thundurus': 'thundurus-incarnate',
+    'landorus': 'landorus-incarnate',
+    'keldeo': 'keldeo-ordinary',
+    'meloetta': 'meloetta-aria',
+    'meowstic': 'meowstic-male',
+    'aegislash': 'aegislash-shield',
+    'pumpkaboo': 'pumpkaboo-average',
+    'gourgeist': 'gourgeist-average',
+    'oricorio': 'oricorio-baile',
+    'lycanroc': 'lycanroc-midday',
+    'wishiwashi': 'wishiwashi-solo',
+    'minior': 'minior-red-meteor',
+    'mimikyu': 'mimikyu-disguised',
+    'toxtricity': 'toxtricity-amped',
+    'eiscue': 'eiscue-ice',
+    'indeedee': 'indeedee-male',
+    'morpeko': 'morpeko-full-belly',
+    'urshifu': 'urshifu-single-strike',
+    'basculegion': 'basculegion-male',
+    'enamorus': 'enamorus-incarnate'
+  };
+
+  if (nameMapping[actualName]) {
+    actualName = nameMapping[actualName];
+  }
+
+  const res = await fetch(`${POKEAPI_BASE_URL}/pokemon/${actualName}`);
+  if (!res.ok) throw new Error(`Failed to fetch pokemon details for ${actualName}`);
   return res.json();
 }
 

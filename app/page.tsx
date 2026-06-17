@@ -55,7 +55,7 @@ export default async function Home({
               )}
             </h3>
             
-            <div className="flex flex-col gap-2 max-h-[60vh] overflow-y-auto pr-2 custom-scrollbar">
+            <div className="flex flex-col gap-1.5">
               {regionsData.results.slice(0, 10).map((r: any) => {
                 const isActive = region === r.name;
                 return (
@@ -63,7 +63,7 @@ export default async function Home({
                     key={r.name} 
                     href={isActive ? "/" : `/?region=${r.name}`}
                     className={cn(
-                      "px-4 py-3 rounded-xl capitalize font-medium transition-colors border",
+                      "px-4 py-2 text-sm rounded-xl capitalize font-bold transition-colors border",
                       isActive 
                         ? "bg-red-500 text-white border-red-500" 
                         : "bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-100 dark:border-slate-800 hover:border-red-300 dark:hover:border-red-900"

@@ -11,7 +11,7 @@ export default async function PokemonPage({
   
   try {
     const pokemon = await fetchPokemonByName(name);
-    const species = await fetchPokemonSpecies(name);
+    const species = await fetchPokemonSpecies(pokemon.species.name);
     
     // Fetch evolution and types in parallel
     const [evolution, ...typeDetails] = await Promise.all([
