@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion } from "framer-motion";
+import { motion, Variants } from "framer-motion";
 import {
   Circle,
   Flame,
@@ -133,7 +133,7 @@ export const TYPE_ICONS: Record<string, any> = {
   stellar: Sparkles,
 };
 
-const iconAnimation = {
+const iconAnimation: Variants = {
   initial: { scale: 0.8, rotate: -10 },
   animate: { scale: 1, rotate: 0 },
   hover: {
