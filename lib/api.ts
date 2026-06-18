@@ -48,7 +48,8 @@ export async function fetchPokemonByName(name: string) {
     'morpeko': 'morpeko-full-belly',
     'urshifu': 'urshifu-single-strike',
     'basculegion': 'basculegion-male',
-    'enamorus': 'enamorus-incarnate'
+    'enamorus': 'enamorus-incarnate',
+    'zygarde': 'zygarde-50'
   };
 
   if (nameMapping[actualName]) {

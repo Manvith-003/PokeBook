@@ -10,6 +10,7 @@ import { Heart, ArrowLeft, Sparkles, BarChart3, Dna, Layers } from "lucide-react
 import { useFavorites } from "@/store/useFavorites";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 
 export default function PokemonClientView({ 
   pokemon, 
@@ -22,6 +23,7 @@ export default function PokemonClientView({
   evolution: any; 
   typeDetails: any[];
 }) {
+  const router = useRouter();
   const [isShiny, setIsShiny] = useState(false);
   const { isFavorite, addFavorite, removeFavorite } = useFavorites();
   const favorite = isFavorite(pokemon.name);
@@ -81,82 +83,85 @@ export default function PokemonClientView({
       
       {/* Navigation */}
       <div className="flex w-full">
-        <Link 
-          href="/" 
+        <button 
+          onClick={() => router.back()}
           className="inline-flex items-center gap-2 px-3 py-1.5 bg-[var(--card)] hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl font-medium transition-colors border border-slate-200 dark:border-slate-800 shadow-sm text-slate-700 dark:text-slate-300 text-sm"
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back to PokéBook</span>
-        </Link>
+        </button>
       </div>
 
       {/* Top Section - 3 Columns */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
         
         {/* Left Col: Image & Identity (Span 4) */}
-        <div 
-          className="lg:col-span-4 bg-white dark:bg-slate-900 rounded-[2rem] shadow-sm border border-slate-200 dark:border-slate-800 relative overflow-hidden flex flex-col items-center p-6"
-        >
-          {/* Top Section Color Background */}
-          <div className="absolute top-0 left-0 right-0 h-[60%] rounded-b-[2rem] overflow-hidden">
+        <div className="lg:col-span-4 bg-white dark:bg-slate-900 rounded-[2rem] shadow-sm border border-slate-200 dark:border-slate-800 relative overflow-hidden flex flex-col">
+          
+          {/* Top Colored Section */}
+          <div className="relative w-full flex-1 flex flex-col items-center justify-center p-6 min-h-[280px]">
             <div 
               className="absolute inset-0 opacity-15 dark:opacity-25"
               style={{ backgroundColor: `var(--type-${mainType})` }}
             />
             {/* Spinning Pokeball watermark */}
             <svg
-              className="absolute -right-12 -bottom-12 w-56 h-56 opacity-[0.03] dark:opacity-5 text-slate-900 dark:text-white animate-[spin_20s_linear_infinite]"
+              className="absolute -right-8 -bottom-8 w-64 h-64 opacity-[0.03] dark:opacity-5 text-slate-900 dark:text-white animate-[spin_20s_linear_infinite] pointer-events-none"
               viewBox="0 0 100 100"
               fill="currentColor"
             >
               <path d="M50 0C22.4 0 0 22.4 0 50c0 27.6 22.4 50 50 50 27.6 0 50-22.4 50-50C100 22.4 77.6 0 50 0zm0 90C27.9 90 10 72.1 10 50H35c0 8.3 6.7 15 15 15s15-6.7 15-15h25c0 22.1-17.9 40-40 40zM50 60c-5.5 0-10-4.5-10-10s4.5-10 10-10 10 4.5 10 10-4.5 10-10 10zm40-15H65c0-8.3-6.7-15-15-15s-15 6.7-15 15H10C10 27.9 27.9 10 50 10s40 17.9 40 40z" />
             </svg>
-          </div>
-          
-          <div 
-            className="absolute top-4 left-6 text-2xl font-black opacity-80 tracking-widest pointer-events-none z-20"
-            style={{ color: `var(--type-${mainType})` }}
-          >
-            #{formattedId}
-          </div>
-          <button 
-            onClick={toggleFavorite} 
-            className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-white/50 hover:bg-white/80 dark:bg-black/20 dark:hover:bg-black/40 backdrop-blur-md transition-all shadow-sm border border-white/20 dark:border-black/20"
-          >
-            <Heart className={cn("w-5 h-5", favorite ? "fill-red-500 text-red-500" : "text-slate-400")} />
-          </button>
 
-          <motion.div 
-            animate={{ y: [0, -10, 0] }}
-            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
-            className="w-56 h-56 relative mt-6 mb-4 z-10 drop-shadow-[0_20px_20px_rgba(0,0,0,0.3)] hover:scale-110 transition-transform duration-500"
-          >
-            <Image src={frontSprite} alt={pokemon.name} fill className="object-contain" />
-          </motion.div>
-          
-          <h1 className="text-3xl lg:text-4xl font-black capitalize mb-3 relative z-10 text-center tracking-tight text-[var(--foreground)] mt-0">
-            {pokemon.name.replace(/-/g, " ")}
-          </h1>
-          
-          <div className="flex gap-2 mb-4 relative z-10">
-            {pokemon.types.map((t: any) => (
-              <TypeBadge key={t.type.name} type={t.type.name} className="shadow-sm" />
-            ))}
+            <div 
+              className="absolute top-6 left-6 text-2xl font-black opacity-80 tracking-widest pointer-events-none z-20"
+              style={{ color: `var(--type-${mainType})` }}
+            >
+              #{formattedId}
+            </div>
+            
+            <button 
+              onClick={toggleFavorite} 
+              className="absolute top-4 right-4 z-20 p-2.5 rounded-full bg-white/50 hover:bg-white/80 dark:bg-black/20 dark:hover:bg-black/40 backdrop-blur-md transition-all shadow-sm border border-white/20 dark:border-black/20"
+            >
+              <Heart className={cn("w-5 h-5", favorite ? "fill-red-500 text-red-500" : "text-slate-400")} />
+            </button>
+
+            <motion.div 
+              animate={{ y: [0, -10, 0] }}
+              transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+              className="w-56 h-56 relative z-10 drop-shadow-[0_20px_20px_rgba(0,0,0,0.3)] hover:scale-110 transition-transform duration-500"
+            >
+              <Image src={frontSprite} alt={pokemon.name} fill className="object-contain" />
+            </motion.div>
           </div>
 
-          <div className="flex w-[90%] mb-2 bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl relative z-10 mt-auto shadow-inner">
-            <button 
-              onClick={() => setIsShiny(false)}
-              className={cn("flex-1 py-2 rounded-lg text-xs font-bold transition-all", !isShiny ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm" : "text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700/50")}
-            >
-              Normal
-            </button>
-            <button 
-              onClick={() => setIsShiny(true)}
-              className={cn("flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5", isShiny ? "bg-yellow-500 text-white shadow-sm" : "text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700/50")}
-            >
-              Shiny <Sparkles className="w-3 h-3" />
-            </button>
+          {/* Bottom White Section */}
+          <div className="w-full bg-white dark:bg-slate-900 p-6 flex flex-col items-center z-20 relative rounded-b-[2rem]">
+            <h1 className="text-3xl lg:text-4xl font-black capitalize mb-3 text-center tracking-tight text-[var(--foreground)]">
+              {species.name.replace(/-/g, " ")}
+            </h1>
+            
+            <div className="flex gap-2 mb-6">
+              {pokemon.types.map((t: any) => (
+                <TypeBadge key={t.type.name} type={t.type.name} className="shadow-sm" />
+              ))}
+            </div>
+
+            <div className="flex w-full bg-slate-100 dark:bg-slate-800 p-1.5 rounded-xl shadow-inner">
+              <button 
+                onClick={() => setIsShiny(false)}
+                className={cn("flex-1 py-2 rounded-lg text-xs font-bold transition-all", !isShiny ? "bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm" : "text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700/50")}
+              >
+                Normal
+              </button>
+              <button 
+                onClick={() => setIsShiny(true)}
+                className={cn("flex-1 py-2 rounded-lg text-xs font-bold transition-all flex items-center justify-center gap-1.5", isShiny ? "bg-yellow-500 text-white shadow-sm" : "text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-700/50")}
+              >
+                Shiny <Sparkles className="w-3 h-3" />
+              </button>
+            </div>
           </div>
         </div>
 

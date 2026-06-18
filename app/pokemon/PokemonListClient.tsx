@@ -22,7 +22,6 @@ export default function PokemonListClient({
   
   const [searchTerm, setSearchTerm] = useState(initialSearch);
   const [selectedType, setSelectedType] = useState(initialType);
-  const [sortBy, setSortBy] = useState("Lowest ID");
   
   const TYPES = Object.keys(TYPE_COLORS).map(
     (t) => t.charAt(0).toUpperCase() + t.slice(1)
@@ -77,20 +76,6 @@ export default function PokemonListClient({
     p.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Apply Sorting
-  const getId = (url: string) => parseInt(url.split("/").filter(Boolean).pop() || "0", 10);
-  
-  filteredPokemon.sort((a: { name: string; url: string }, b: { name: string; url: string }) => {
-    if (sortBy === "Lowest ID") {
-      return getId(a.url) - getId(b.url);
-    } else if (sortBy === "A to Z") {
-      return a.name.localeCompare(b.name);
-    } else if (sortBy === "Z to A") {
-      return b.name.localeCompare(a.name);
-    }
-    return 0;
-  });
-
   return (
     <div className="flex flex-col gap-6">
       {/* Filters & Search Bar */}
@@ -115,15 +100,6 @@ export default function PokemonListClient({
             {TYPES.map(type => (
               <option key={type} value={type}>{type}</option>
             ))}
-          </select>
-          <select 
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="h-14 px-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 outline-none shadow-sm cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors font-medium text-slate-700 dark:text-slate-300 md:min-w-[140px]"
-          >
-            <option value="Lowest ID">Lowest ID</option>
-            <option value="A to Z">A to Z</option>
-            <option value="Z to A">Z to A</option>
           </select>
         </div>
       )}
