@@ -80,7 +80,7 @@ export default function PokemonListClient({
   // Apply Sorting
   const getId = (url: string) => parseInt(url.split("/").filter(Boolean).pop() || "0", 10);
   
-  filteredPokemon.sort((a, b) => {
+  filteredPokemon.sort((a: { name: string; url: string }, b: { name: string; url: string }) => {
     if (sortBy === "Lowest ID") {
       return getId(a.url) - getId(b.url);
     } else if (sortBy === "A to Z") {
