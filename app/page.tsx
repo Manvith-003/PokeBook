@@ -20,12 +20,31 @@ export default async function Home({
   if (region) {
     try {
       const regionData = await fetchRegionByName(region);
-      const mainPokedexUrl = regionData.pokedexes[0]?.url;
-      if (mainPokedexUrl) {
-        const pokedexData = await fetchPokedexByUrl(mainPokedexUrl);
-        displayedPokemon = pokedexData.pokemon_entries.map((e: any) => ({
-          name: e.pokemon_species.name
-        }));
+      const generationUrl = regionData.main_generation?.url;
+      
+      if (generationUrl) {
+        const res = await fetch(generationUrl);
+        if (res.ok) {
+          const generationData = await res.json();
+          let species = generationData.pokemon_species;
+          
+          // Sort them properly by ID since the generation endpoint doesn't guarantee order
+          species.sort((a: any, b: any) => {
+            const idA = parseInt(a.url.split('/').filter(Boolean).pop() || "0", 10);
+            const idB = parseInt(b.url.split('/').filter(Boolean).pop() || "0", 10);
+            return idA - idB;
+          });
+          
+          displayedPokemon = species.map((s: any) => ({ name: s.name }));
+        }
+      } else {
+        const mainPokedexUrl = regionData.pokedexes[0]?.url;
+        if (mainPokedexUrl) {
+          const pokedexData = await fetchPokedexByUrl(mainPokedexUrl);
+          displayedPokemon = pokedexData.pokemon_entries.map((e: any) => ({
+            name: e.pokemon_species.name
+          }));
+        }
       }
       title = `${region.charAt(0).toUpperCase() + region.slice(1)} Region Pokémon`;
     } catch (e) {

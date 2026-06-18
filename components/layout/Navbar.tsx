@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Heart, Menu } from "lucide-react";
+import { Search, Heart, Menu, Layers } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 
 export function Navbar() {
   const [search, setSearch] = useState("");
@@ -27,7 +28,7 @@ export function Navbar() {
             <div className="w-3 h-3 bg-white rounded-full border-2 border-black absolute" />
           </div>
           <span className="text-xl font-bold hidden sm:inline-block text-[var(--foreground)]">
-            PokéDex
+            PokéBook
           </span>
         </Link>
 
@@ -43,6 +44,14 @@ export function Navbar() {
         </form>
 
         <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <Link 
+            href="/types" 
+            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
+            title="Types"
+          >
+            <Layers className="w-5 h-5" />
+          </Link>
           <Link 
             href="/favorites" 
             className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"

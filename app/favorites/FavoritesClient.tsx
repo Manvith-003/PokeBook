@@ -24,7 +24,7 @@ export default function FavoritesClient() {
         </div>
         <h2 className="text-2xl font-bold mb-2">No favorites yet</h2>
         <p className="text-slate-500 max-w-md mx-auto mb-8">
-          You haven't saved any Pokémon to your favorites. Explore the Pokédex and click the heart icon to save some!
+          You haven't saved any Pokémon to your favorites. Explore PokéBook and click the heart icon to save some!
         </p>
         <Link 
           href="/pokemon" 

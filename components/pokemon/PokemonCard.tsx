@@ -68,7 +68,7 @@ export function PokemonCard({ name }: PokemonCardProps) {
           {/* ID Badge - Hide for forms with IDs > 10000 since they aren't true pokedex numbers */}
           {pokemon.id < 10000 && (
             <span 
-              className="absolute top-4 left-4 text-sm font-black opacity-40 mix-blend-overlay"
+              className="absolute top-4 left-4 text-sm font-black opacity-80"
               style={{ color: `var(--type-${mainType})` }}
             >
               #{formattedId}

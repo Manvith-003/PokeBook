@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --background: #f8fafc;
   --foreground: #0f172a;
@@ -10,24 +12,25 @@
   --primary: #ef4444;
   --primary-foreground: #f8fafc;
 
-  --type-normal: #A8A77A;
-  --type-fire: #EE8130;
-  --type-water: #6390F0;
-  --type-electric: #F7D02C;
-  --type-grass: #7AC74C;
-  --type-ice: #96D9D6;
-  --type-fighting: #C22E28;
-  --type-poison: #A33EA1;
-  --type-ground: #E2BF65;
-  --type-flying: #A98FF3;
-  --type-psychic: #F95587;
-  --type-bug: #A6B91A;
-  --type-rock: #B6A136;
-  --type-ghost: #735797;
-  --type-dragon: #6F35FC;
-  --type-dark: #705848;
-  --type-steel: #B7B7CE;
-  --type-fairy: #D685AD;
+  --type-normal: #9ca3af;
+  --type-fire: #ef4444;
+  --type-water: #3b82f6;
+  --type-electric: #eab308;
+  --type-grass: #22c55e;
+  --type-ice: #06b6d4;
+  --type-fighting: #b91c1c;
+  --type-poison: #9333ea;
+  --type-ground: #d97706;
+  --type-flying: #6366f1;
+  --type-psychic: #ec4899;
+  --type-bug: #84cc16;
+  --type-rock: #92400e;
+  --type-ghost: #4c1d95;
+  --type-dragon: #4338ca;
+  --type-dark: #374151;
+  --type-steel: #64748b;
+  --type-fairy: #f43f5e;
+  --type-stellar: #0d9488;
 }
 
 @theme inline {
@@ -58,17 +61,15 @@
   --color-type-fairy: var(--type-fairy);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0f172a;
-    --foreground: #f8fafc;
-    
-    --card: #1e293b;
-    --card-foreground: #f8fafc;
-    
-    --primary: #f87171;
-    --primary-foreground: #0f172a;
-  }
+.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  
+  --primary: #f87171;
+  --primary-foreground: #0f172a;
 }
 
 body {
