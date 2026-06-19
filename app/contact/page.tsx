@@ -87,7 +87,6 @@ export default function ContactPage() {
             <button 
               type="button" 
               className="w-full px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 transition-opacity"
-              onClick={() => alert("Thank you for your message! Our support team will get back to you shortly.")}
             >
               Submit Inquiry
             </button>
