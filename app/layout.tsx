@@ -68,6 +68,20 @@ export default function RootLayout({
           <main className="flex-1 flex flex-col">
             {children}
           </main>
+          <footer className="border-t bg-white/50 dark:bg-slate-950/50 backdrop-blur-sm border-slate-200 dark:border-slate-800 py-8 mt-auto">
+            <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-slate-500 dark:text-slate-400">
+              <div>
+                &copy; {new Date().getFullYear()} PokéBook. All rights reserved.
+              </div>
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+                <a href="/about" className="hover:text-primary transition-colors">About Us</a>
+                <a href="/contact" className="hover:text-primary transition-colors">Contact Us</a>
+                <a href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</a>
+                <a href="/terms" className="hover:text-primary transition-colors">Terms of Service</a>
+                <a href="/disclaimer" className="hover:text-primary transition-colors">Disclaimer</a>
+              </div>
+            </div>
+          </footer>
         </Providers>
       </body>
     </html>

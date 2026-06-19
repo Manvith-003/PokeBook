@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Search } from "lucide-react";
 import { fetchPokemonList, fetchRegions, fetchRegionByName, fetchPokedexByUrl } from "@/lib/api";
 import { PokemonCard } from "@/components/pokemon/PokemonCard";
+import { RegionPokemonList } from "@/components/pokemon/RegionPokemonList";
 import { cn } from "@/lib/utils";
 import PokemonListClient from "@/app/pokemon/PokemonListClient";
 
@@ -109,11 +110,7 @@ export default async function Home({
           
           {region ? (
             displayedPokemon.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {displayedPokemon.map((pokemon: any) => (
-                  <PokemonCard key={pokemon.name} name={pokemon.name} />
-                ))}
-              </div>
+              <RegionPokemonList pokemonList={displayedPokemon} />
             ) : (
               <div className="w-full py-12 text-center text-slate-500 bg-[var(--card)] rounded-2xl border border-slate-200 dark:border-slate-800">
                 No Pokémon found in this region.
