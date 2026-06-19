@@ -50,6 +50,9 @@ export const metadata: Metadata = {
     title: 'PokéBook',
     description: 'A modern, responsive Pokémon database built with Next.js',
   },
+  other: {
+    "google-adsense-account": "ca-pub-2531124120493870"
+  }
 };
 
 export default function RootLayout({
@@ -63,6 +66,14 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable} ${lora.variable} ${outfit.variable} h-full antialiased`}
     >
+      <head>
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2531124120493870"
+          crossOrigin="anonymous"
+          strategy="lazyOnload"
+        />
+      </head>
       <body className="min-h-full flex flex-col bg-[var(--background)] text-[var(--foreground)]">
         <Providers>
           <Navbar />
@@ -84,12 +95,6 @@ export default function RootLayout({
             </div>
           </footer>
         </Providers>
-        <Script
-          async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2531124120493870"
-          crossOrigin="anonymous"
-          strategy="afterInteractive"
-        />
       </body>
     </html>
   );
