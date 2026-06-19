@@ -6,11 +6,37 @@ import Link from "next/link";
 import { TypeBadge } from "@/components/ui/TypeBadge";
 import { StatBar } from "@/components/ui/StatBar";
 import { PokemonCard } from "@/components/pokemon/PokemonCard";
-import { Heart, ArrowLeft, Sparkles, BarChart3, Dna, Layers } from "lucide-react";
+import { Heart, ArrowLeft, Sparkles, BarChart3, Dna, Layers, Swords } from "lucide-react";
 import { useFavorites } from "@/store/useFavorites";
 import { cn } from "@/lib/utils";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
+
+// --- Battle Role Algorithm ---
+function getBattleRole(stats: any[]) {
+  const hp = stats.find((s: any) => s.stat.name === 'hp').base_stat;
+  const atk = stats.find((s: any) => s.stat.name === 'attack').base_stat;
+  const def = stats.find((s: any) => s.stat.name === 'defense').base_stat;
+  const spa = stats.find((s: any) => s.stat.name === 'special-attack').base_stat;
+  const spd = stats.find((s: any) => s.stat.name === 'special-defense').base_stat;
+  const spe = stats.find((s: any) => s.stat.name === 'speed').base_stat;
+
+  if (spe >= 100 && atk >= 100 && spa < atk) return "Fast Physical Attacker";
+  if (spe >= 100 && spa >= 100 && atk < spa) return "Fast Special Attacker";
+  if (spe >= 100 && atk >= 90 && spa >= 90) return "Fast Mixed Attacker";
+  
+  if (hp >= 90 && def >= 90 && spd >= 90) return "Mixed Wall / Tank";
+  if (def >= 110 && spd < 90) return "Physical Wall";
+  if (spd >= 110 && def < 90) return "Special Wall";
+  
+  if (atk >= 110 && spe < 90) return "Bulky Physical Attacker";
+  if (spa >= 110 && spe < 90) return "Bulky Special Attacker";
+
+  const total = hp + atk + def + spa + spd + spe;
+  if (total < 350) return "Early Game / Un-evolved";
+
+  return "Balanced / Versatile";
+}
 
 export default function PokemonClientView({ 
   pokemon, 
@@ -63,6 +89,24 @@ export default function PokemonClientView({
   const immunitiesList = Object.entries(typeMultipliers).filter(([, mult]) => mult === 0);
 
   const flavorText = species.flavor_text_entries.find((f: any) => f.language.name === "en")?.flavor_text.replace(/\f/g, " ");
+
+  // Calculate Battle Role
+  const battleRole = getBattleRole(pokemon.stats);
+
+  // Extract Notable Moves (Level Up)
+  const notableMoves = pokemon.moves
+    ?.flatMap((m: any) => {
+      const levelUpDetails = m.version_group_details.find(
+        (v: any) => v.move_learn_method.name === "level-up" && v.level_learned_at > 0
+      );
+      if (!levelUpDetails) return [];
+      return [{
+        name: m.move.name,
+        level: levelUpDetails.level_learned_at,
+      }];
+    })
+    .sort((a: any, b: any) => a.level - b.level)
+    .slice(-8) || []; // Get the last 8 learned moves (usually the most powerful)
 
   // Parse Evolution Chain
   const evolutionChain: string[] = [];
@@ -167,10 +211,11 @@ export default function PokemonClientView({
 
         {/* Middle Col: Physical Info & Strengths/Weaknesses (Span 4) */}
         <div className="lg:col-span-4 bg-white dark:bg-slate-900 rounded-[2rem] p-6 shadow-sm border border-slate-200 dark:border-slate-800 flex flex-col gap-4">
-          <div className="relative mb-0 px-4 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
-            <span className="absolute -top-2 left-3 text-4xl text-slate-300 dark:text-slate-700 font-serif leading-none pointer-events-none">"</span>
+          <div className="relative mb-0 px-4 py-4 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-800">
+            <div className="absolute -top-3 -left-2 bg-yellow-400 text-yellow-900 text-[10px] font-black uppercase px-2 py-0.5 rounded-full shadow-sm rotate-[-5deg]">Did you know?</div>
+            <span className="absolute -top-2 left-3 text-4xl text-slate-300 dark:text-slate-700 font-serif leading-none pointer-events-none opacity-50">"</span>
             <p 
-              className="relative z-10 text-sm text-slate-600 dark:text-slate-300 italic leading-relaxed text-center"
+              className="relative z-10 text-sm text-slate-700 dark:text-slate-300 italic leading-relaxed text-center font-medium mt-1"
               style={{ fontFamily: "var(--font-lora), serif" }}
             >
               {flavorText}
@@ -267,6 +312,38 @@ export default function PokemonClientView({
               <span className="text-2xl text-slate-800 dark:text-slate-100">{pokemon.stats.reduce((acc: number, curr: any) => acc + curr.base_stat, 0)}</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Battle Profile & Notable Moves */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <div className="bg-[var(--card)] p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm flex flex-col items-center justify-center text-center">
+          <div className="w-16 h-16 bg-red-100 dark:bg-red-500/20 text-red-500 rounded-full flex items-center justify-center mb-4">
+            <Swords className="w-8 h-8" />
+          </div>
+          <h2 className="text-sm font-bold text-slate-500 uppercase tracking-widest mb-1">Battle Profile</h2>
+          <p className="text-2xl font-black text-[var(--foreground)]">{battleRole}</p>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-3 max-w-xs">
+            Based on this Pokémon's base stats, it functions best as a <strong>{battleRole.toLowerCase()}</strong> in competitive battles.
+          </p>
+        </div>
+
+        <div className="lg:col-span-2 bg-[var(--card)] p-6 rounded-3xl border border-slate-200 dark:border-slate-800 shadow-sm">
+          <h2 className="text-xl font-bold mb-4 flex items-center gap-2"><Sparkles className="w-5 h-5 text-yellow-500" /> Notable Level-Up Moves</h2>
+          {notableMoves.length > 0 ? (
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {notableMoves.map((move: any, i: number) => (
+                <div key={i} className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-3 flex flex-col justify-between">
+                  <span className="text-xs font-bold text-slate-400 mb-1">Lv. {move.level}</span>
+                  <span className="font-bold text-sm capitalize truncate" title={move.name.replace("-", " ")}>
+                    {move.name.replace("-", " ")}
+                  </span>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-slate-500 italic text-sm py-4">No notable level-up moves found.</div>
+          )}
         </div>
       </div>
 
