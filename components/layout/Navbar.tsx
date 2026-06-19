@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Search, Heart, Menu, Layers } from "lucide-react";
+import { Search, Heart, Layers, BookOpen } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
@@ -45,6 +45,13 @@ export function Navbar() {
 
         <div className="flex items-center gap-2">
           <ThemeToggle />
+          <Link 
+            href="/guides" 
+            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
+            title="Guides"
+          >
+            <BookOpen className="w-5 h-5" />
+          </Link>
           <Link 
             href="/types" 
             className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
