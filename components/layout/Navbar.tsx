@@ -47,24 +47,27 @@ export function Navbar() {
           <ThemeToggle />
           <Link 
             href="/guides" 
-            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
+            className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
             title="Guides"
           >
             <BookOpen className="w-5 h-5" />
+            <span className="text-sm font-medium hidden md:inline-block">Guides</span>
           </Link>
           <Link 
             href="/types" 
-            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
+            className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
             title="Types"
           >
             <Layers className="w-5 h-5" />
+            <span className="text-sm font-medium hidden md:inline-block">Types</span>
           </Link>
           <Link 
             href="/favorites" 
-            className="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
+            className="flex items-center gap-2 px-3 py-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-[var(--foreground)]"
             title="Favorites"
           >
             <Heart className="w-5 h-5" />
+            <span className="text-sm font-medium hidden md:inline-block">Favorites</span>
           </Link>
         </div>
       </div>
