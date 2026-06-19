@@ -64,8 +64,8 @@ export default async function Home({
       <div className="container mx-auto px-4 flex flex-col md:flex-row gap-8 items-start">
         
         {/* Left Side - Regions Sidebar */}
-        <aside className="w-full md:w-64 lg:w-80 flex-shrink-0 sticky top-24">
-          <div className="bg-[var(--card)] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-5">
+        <aside className="w-full md:w-64 lg:w-80 flex-shrink-0 md:sticky md:top-24">
+          <div className="bg-[var(--card)] rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 md:p-5">
             <h3 className="text-xl font-bold mb-4 flex items-center justify-between">
               Filter by Region
               {region && (
@@ -75,7 +75,7 @@ export default async function Home({
               )}
             </h3>
             
-            <div className="flex flex-col gap-1.5">
+            <div className="flex flex-row md:flex-col gap-2 md:gap-1.5 overflow-x-auto pb-2 md:pb-0 hide-scrollbar">
               {regionsData.results.slice(0, 10).map((r: any) => {
                 const isActive = region === r.name;
                 return (
@@ -83,7 +83,7 @@ export default async function Home({
                     key={r.name} 
                     href={isActive ? "/" : `/?region=${r.name}`}
                     className={cn(
-                      "px-4 py-2 text-sm rounded-xl capitalize font-bold transition-colors border",
+                      "px-4 py-2 text-sm rounded-xl capitalize font-bold transition-colors border whitespace-nowrap",
                       isActive 
                         ? "bg-red-500 text-white border-red-500" 
                         : "bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-100 dark:border-slate-800 hover:border-red-300 dark:hover:border-red-900"
